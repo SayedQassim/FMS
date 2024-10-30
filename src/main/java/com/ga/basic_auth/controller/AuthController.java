@@ -62,4 +62,9 @@ public class AuthController {
         return this.userService.updateUser(user);
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<?> health(){
+        return ResponseEntity.ok().build();
+    }
+
 }
