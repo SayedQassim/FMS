@@ -39,6 +39,10 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private UserImage userImage;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_id", nullable = true)
+    private Family family;
+
     public User(int id, String email, String username, String password, String phoneNo, UserStatus status, UserRole role) {
         this.id = id;
         this.email = email;

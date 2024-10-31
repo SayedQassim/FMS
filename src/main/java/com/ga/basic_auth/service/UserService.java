@@ -72,7 +72,7 @@ public class UserService implements BaseService{
         removeUnactivatedUser(user.getEmail());
 
         user.setId(0);
-        user.setRole(UserRole.CUSTOMER);
+        user.setRole(UserRole.NO_FAMILY);
         user.setStatus(UserStatus.UNVERIFIED);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
