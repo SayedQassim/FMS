@@ -39,6 +39,7 @@ public class FamilyService implements BaseService{
 
   public void addToFamily(User user, Family family) {
     user.setFamily(family);
+    user.setRole(UserRole.MEMBER);
     userRepository.save(user);
   }
 }
