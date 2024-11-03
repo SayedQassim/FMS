@@ -34,6 +34,7 @@ public class JwtUtil {
     public String generateToken(User user,String secret){
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("family_id", user.getFamily().getId().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime()+jwtExpirationPeriod))
                 .signWith(SignatureAlgorithm.HS256,secret)
@@ -47,8 +48,13 @@ public class JwtUtil {
         return  getUserNameFromToken(token,verificationSecret);
     }
 
+    public String getFamilyIdFromToken(String token){
+        return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody().get("family_id", String.class);
+    }
+
     public String getUserNameFromToken(String token,String secret){
         return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody().getSubject();
+
     }
 
     public boolean validateToken(String Token){

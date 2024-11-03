@@ -8,6 +8,8 @@ import com.ga.basic_auth.dto.response.UserDto;
 import com.ga.basic_auth.exception.InformationExistsException;
 import com.ga.basic_auth.exception.InformationNotFoundException;
 import com.ga.basic_auth.model.*;
+import com.ga.basic_auth.multitenant.TenantSpecification;
+import com.ga.basic_auth.repository.IFamilyRepository;
 import com.ga.basic_auth.repository.IUserImageRepository;
 import com.ga.basic_auth.repository.IUserRepository;
 import com.ga.basic_auth.util.EmailUtil;
@@ -15,6 +17,7 @@ import com.ga.basic_auth.util.FileUtil;
 import com.ga.basic_auth.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +37,9 @@ public class UserService implements BaseService{
 
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private IFamilyRepository familyRepository;
 
     @Autowired
     @Lazy
@@ -74,6 +82,10 @@ public class UserService implements BaseService{
         user.setId(0);
         user.setRole(UserRole.NO_FAMILY);
         user.setStatus(UserStatus.UNVERIFIED);
+        // Set the default "Unassigned" family
+        Family unassignedFamily = familyRepository.findByFamilyName("Unassigned");
+        System.out.println(unassignedFamily.getFamilyName());
+        user.setFamily(unassignedFamily);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -202,6 +214,16 @@ public class UserService implements BaseService{
         this.userRepository.save(userToUpdate);
 
         return UserDto.toUserDto(userToUpdate);
+    }
+
+    public List<UserDto> getAllUsers(){
+
+        Specification<User> tenantSpec = new TenantSpecification<>();
+
+        List<User> user = userRepository.findAll(tenantSpec);
+        List<UserDto> userDtos=new ArrayList<>();
+        user.forEach(u->userDtos.add(UserDto.toUserDto(u)));
+        return userDtos;
     }
 
     public ImageDetails saveImage(MultipartFile file) throws IOException {

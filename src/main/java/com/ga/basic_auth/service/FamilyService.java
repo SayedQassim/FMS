@@ -25,7 +25,6 @@ public class FamilyService implements BaseService{
       throw new InformationExistsException("Family name already exists.");
     }
 
-    family.setId(0L);
     Family savedFamily = familyRepository.save(family);
     User currentUser = getCurrUser();
     currentUser.setFamily(savedFamily);

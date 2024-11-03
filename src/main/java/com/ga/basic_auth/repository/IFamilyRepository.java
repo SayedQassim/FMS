@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface IFamilyRepository extends JpaRepository<Family, Long> {
 
-  public List<Family> findByFamilyName(String familyName);
+  public Family findByFamilyName(String familyName);
   public boolean existsByFamilyName(String familyName);
 }

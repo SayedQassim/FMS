@@ -1,6 +1,7 @@
 package com.ga.basic_auth.security;
 
 import ch.qos.logback.core.util.StringUtil;
+import com.ga.basic_auth.multitenant.TenantContext;
 import com.ga.basic_auth.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,6 +40,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String jwt=parseJet(request);
             if(jwt!=null && jwtUtil.validateToken(jwt)){
                 String username= jwtUtil.getUserNameFromToken(jwt);
+                String familyId= jwtUtil.getFamilyIdFromToken(jwt);
+                System.out.println("familyId:"+familyId);
+                if (familyId != null) {
+                    TenantContext.setTenantId(familyId);  // Set family ID in TenantContext
+                }
                 UserDetails userDetails=userDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken
                         (userDetails,null,userDetails.getAuthorities());
@@ -48,6 +54,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             logger.error("cannot set user authentication: {}",e);
         }
 
-        filterChain.doFilter(request,response);
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            TenantContext.clear();
+            System.out.println("Tenant ID cleared.");
+            System.out.println("Tenant ID: "+TenantContext.getTenantId());
+        }
     }
 }

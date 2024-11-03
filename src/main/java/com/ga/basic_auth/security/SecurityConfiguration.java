@@ -40,7 +40,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(c->
                 c.requestMatchers(
-                                "/auth/users/verify","/auth/users/login","/auth/users/resetPassword",
+                                "/auth/users/verify","/auth/users/login","/auth/users/resetPassword","/**",
                                 "/auth/users/forgotPassword","/auth/users/register", "/ResetPassword.html", "/userImage/check"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
