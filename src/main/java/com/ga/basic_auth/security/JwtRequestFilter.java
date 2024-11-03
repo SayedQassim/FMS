@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String jwt=parseJet(request);
             if(jwt!=null && jwtUtil.validateToken(jwt)){
                 String username= jwtUtil.getUserNameFromToken(jwt);
-                String familyId= jwtUtil.getFamilyIdFromToken(jwt);
+                Long familyId= jwtUtil.getFamilyIdFromToken(jwt);
                 System.out.println("familyId:"+familyId);
                 if (familyId != null) {
                     TenantContext.setTenantId(familyId);  // Set family ID in TenantContext

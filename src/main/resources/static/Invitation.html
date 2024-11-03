@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Invitation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      font-size: 1rem;
+      color: #555;
+    }
+    a.button {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
+    }
+    a.button:hover {
+      background-color: #45a049;
+    }
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>You're Invited!</h1>
+  <p>Hi [Recipient's Name],</p>
+  <p>You have been invited to join our family management system. Click the button below to accept the invitation:</p>
+  <a href="#" class="button" id="acceptButton">Accept Invitation</a>
+  <div id="message"></div>
+</div>
+
+<script>
+  document.getElementById('acceptButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    if (!token) {
+      document.getElementById('message').textContent = 'Invalid invitation link.';
+      document.getElementById('message').style.color = 'red';
+      return;
+    }
+
+    fetch('http://localhost:5000/api/invitations/accept', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: token
+    })
+            .then(response => {
+              if (response.ok) {
+                document.getElementById('message').textContent = 'Invitation accepted successfully!';
+                document.getElementById('message').style.color = 'green';
+              } else {
+                document.getElementById('message').textContent = 'Failed to accept invitation. Please try again.';
+                document.getElementById('message').style.color = 'red';
+              }
+            })
+            .catch(error => {
+              document.getElementById('message').textContent = 'Error: ' + error.message;
+              document.getElementById('message').style.color = 'red';
+            });
+  });
+</script>
+</body>
+</html>

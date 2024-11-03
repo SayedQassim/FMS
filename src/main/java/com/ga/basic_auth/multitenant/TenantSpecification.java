@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class TenantSpecification<T> implements Specification<T> {
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-    String tenantId = TenantContext.getTenantId();
+    Long tenantId = TenantContext.getTenantId();
     if (tenantId == null) {
       throw new IllegalStateException("Tenant ID is not set");
     }

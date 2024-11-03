@@ -83,7 +83,7 @@ public class UserService implements BaseService{
         user.setRole(UserRole.NO_FAMILY);
         user.setStatus(UserStatus.UNVERIFIED);
         // Set the default "Unassigned" family
-        Family unassignedFamily = familyRepository.findByFamilyName("Unassigned");
+        Family unassignedFamily = (familyRepository.findByFamilyName("Unassigned")).get();
         System.out.println(unassignedFamily.getFamilyName());
         user.setFamily(unassignedFamily);
 

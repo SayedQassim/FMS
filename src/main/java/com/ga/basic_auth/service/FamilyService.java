@@ -36,4 +36,9 @@ public class FamilyService implements BaseService{
 
     return new ResponseTemplate(HttpStatus.OK, "Family created successfully");
   }
+
+  public void addToFamily(User user, Family family) {
+    user.setFamily(family);
+    userRepository.save(user);
+  }
 }

@@ -17,4 +17,6 @@ public class FamilyController {
   public ResponseEntity<?> createFamily(@RequestBody Family family) {
     return familyService.createFamily(family);
   }
+
+
 }
