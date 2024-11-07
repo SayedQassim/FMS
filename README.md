@@ -32,7 +32,10 @@ As a family admin, I want to invite other users to join my family and manage fam
 Link to User Stories (replace with actual link)
 
 ERD Diagram
-Link to ERD (replace with actual link)
+![erd](https://github.com/user-attachments/assets/eeb7a47f-edfc-4ce1-a75d-1001d4ba81d2)
+
+
+
 
 Planning and Timeline
 The project was broken down into several phases, with user authentication, family management, and grocery list features prioritized in the initial stages. The timeline included detailed milestones for each phase, ensuring the delivery of core features before additional enhancements.
